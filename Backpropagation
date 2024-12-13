@@ -1,0 +1,21 @@
+*BACKPROPAGATION*
+import numpy as np
+x = np.array([[2,9], [1,5], [3,6]],dtype=float)
+y = np.array([[92], [86], [89]], dtype=float) / 100
+def sigmoid(x): return 1/(1+np.exp(-x))
+def deriavatives_sigmoid(x):return x*(1-x)
+wh,bh=np.random.uniform(size=(2,2)),np.random.uniform(size=(1,2))
+wout,bout=np.random.uniform(size=(2,1)),np.random.uniform(size=(1,1))
+epoch,lr=1000,0.01
+for _ in range(epoch):
+    hlayer_act=sigmoid(np.dot(x,wh)+bh)
+    output=sigmoid(np.dot(hlayer_act,wout)+bout)
+    d_output=(y-output)*deriavatives_sigmoid(output)
+    d_hiddenlayer=d_output.dot(wout.T)*deriavatives_sigmoid(hlayer_act)
+    wout+=hlayer_act.T.dot(d_output)*lr
+    bout+=np.sum(d_output,axis=0,keepdims=True)*lr
+    wh+=x.T.dot(d_hiddenlayer)*lr 
+    bh+=np.sum(d_hiddenlayer,axis=0,keepdims=True)*lr 
+print("Actual Output",y)
+print("Predicted Output",output)
+print("Error",y-output)
