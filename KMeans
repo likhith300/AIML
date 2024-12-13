@@ -1,0 +1,29 @@
+*KMEANS*
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd 
+from sklearn import datasets
+from sklearn.cluster import KMeans
+from sklearn.metrics import accuracy_score,confusion_matrix
+iris=datasets.load_iris()
+X=pd.DataFrame(iris.data,columns=['Sepal_length','Sepal_Width','Petal_Length','Petal_Width'])
+print(X.head())
+y=pd.DataFrame(iris.target,columns=['target'])
+print(y.tail())
+
+colormap=np.array(['red','lime','black'])
+plt.subplot(1,2,1)
+plt.scatter(X.Sepal_length,X.Sepal_Width,c=colormap[y.target])
+plt.title('Sepal')
+plt.subplot(1,2,2)
+plt.scatter(X.Petal_Length,X.Petal_Width,c=colormap[y.target])
+plt.title('Petal')
+plt.show()
+model=KMeans(n_clusters=3)
+model.fit(X)
+plt.subplot(1,2,1)
+plt.scatter(X.Petal_Length,X.Petal_Width,c=colormap[y.target])
+plt.title('Real Classification')
+plt.subplot(1,2,2)
+plt.scatter(X.Petal_Length,X.Petal_Width,c=colormap[model.labels_])
+plt.title('KMeans Classification')
